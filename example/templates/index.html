@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TOTP Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .qr-code {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .form-group {
+            margin: 15px 0;
+        }
+        input[type="text"] {
+            padding: 8px;
+            width: 200px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            padding: 8px 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .valid {
+            background: #d4edda;
+            color: #155724;
+        }
+        .invalid {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <h1>TOTP Example</h1>
+    
+    <div class="container">
+        <h2>Setup</h2>
+        <p>Secret Key: <strong>{{.Secret}}</strong></p>
+        <p>Scan this QR code with your authenticator app:</p>
+        <div class="qr-code">
+            <img src="data:image/png;base64,{{.QRCode}}" alt="QR Code">
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Verify TOTP</h2>
+        <form method="POST">
+            <div class="form-group">
+                <label for="code">Enter TOTP Code:</label><br>
+                <input type="text" id="code" name="code" required>
+                <button type="submit">Verify</button>
+            </div>
+        </form>
+
+        {{if .IsValid}}
+            {{if .}}
+                <div class="result valid">
+                    Code "{{.TOTPCode}}" is valid!
+                </div>
+            {{else}}
+                <div class="result invalid">
+                    Code "{{.TOTPCode}}" is invalid!
+                </div>
+            {{end}}
+        {{end}}
+    </div>
+</body>
+</html>
